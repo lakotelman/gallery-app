@@ -6,35 +6,39 @@ import Measurements from "./components/Outputs/Measurments";
 import { getDots } from "./utils/operations";
 
 function App() {
-  let topCorner: number[] = []
+  const [topCorner, setTopCorner] = useState<number[]>([]);
 
   const getCalculation = (data: any) => {
     let itemsArr = [];
     for (let i = 0; i < data.frameCount; i++) {
       itemsArr.push({ width: data.frameWidth, height: data.frameHeight });
-
     }
-    console.log(itemsArr)
     if (data.layout === "row") {
-      topCorner = getDots(
-        itemsArr,
-        data.gap,
-        [1, data.frameCount],
-        [data.wallWidth, data.wallHeight]
+      setTopCorner(
+        getDots(
+          itemsArr,
+          data.gap,
+          { rows: 1, columns: data.frameCount },
+          { width: data.wallWidth, height: data.wallHeight }
+        )
       );
     } else if (data.layout === "column") {
-      topCorner = getDots(
-        itemsArr,
-        data.gap,
-        [data.frameCount, 1],
-        [data.wallWidth, data.wallHeight]
+      setTopCorner(
+        getDots(
+          itemsArr,
+          data.gap,
+          { rows: data.frameCount, columns: 1 },
+          { width: data.wallWidth, height: data.wallHeight }
+        )
       );
     } else {
-      topCorner = getDots(
-        itemsArr,
-        data.gap,
-        [data.gridRows, data.gridColumns],
-        [data.wallWidth, data.wallHeight]
+      setTopCorner(
+        getDots(
+          itemsArr,
+          data.gap,
+          { rows: data.gridRows, columns: data.gridColumns },
+          { width: data.wallWidth, height: data.wallHeight }
+        )
       );
     }
   };
@@ -45,15 +49,15 @@ function App() {
         <div>
           <h2 className=" font-bold text-3xl">Make a Gallery</h2>
           <p>
-            This application will create a gallery wall for an even number of
-            your same-size pieces. Simply enter the quantity of your pieces and
-            respective dimensions in inches. Currently the layout options are
-            for a single row, a single column, or a simple grid.
+            This application will create a gallery wall for your same-size
+            pieces. Simply enter the quantity of your pieces and respective
+            dimensions in inches. Currently the layout options are for a single
+            row, a single column, or a simple grid.
           </p>
         </div>
       </Card>
       <InputsForm calculate={getCalculation} />
-      <Measurements topCorner={topCorner}/>
+      <Measurements topCorner={topCorner} />
     </div>
   );
 }

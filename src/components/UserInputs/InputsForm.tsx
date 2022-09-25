@@ -2,18 +2,20 @@ import { useReducer } from "react";
 import { Button } from "../UI/Button";
 import Card from "../UI/Card";
 
+interface IGridOptions {
+  frameCount: number;
+  frameHeight: number;
+  frameWidth: number;
+  wallHeight: number;
+  wallWidth: number;
+  layout: "row" | "column" | "grid";
+  gap: number;
+  gridRows: number;
+  gridColumns: number;
+}
+
 interface Props {
-  calculate: (data: {
-    frameCount: number;
-    frameHeight: number;
-    frameWidth: number;
-    wallHeight: number;
-    wallWidth: number;
-    layout: "row" | "column" |"grid";
-    gap: number;
-    gridRows: number;
-    gridColumns: number;
-  }) => void;
+  calculate: (data: IGridOptions) => void;
 }
 
 const initialState = {
@@ -102,17 +104,6 @@ export const InputsForm = (props: Props) => {
             />
           </div>
           <div className="flex flex-col">
-            <label htmlFor="frameHeight">Frame Height </label>
-            <input
-              className=""
-              type="number"
-              step="0.5"
-              id="frameHeight"
-              value={frameHeight}
-              onChange={inputChangeHandler}
-            />
-          </div>
-          <div className="flex flex-col">
             <label htmlFor="frameWidth">Frame Width </label>
             <input
               className=""
@@ -124,13 +115,13 @@ export const InputsForm = (props: Props) => {
             />
           </div>
           <div className="flex flex-col">
-            <label htmlFor="wallHeight">Wall Height </label>
+            <label htmlFor="frameHeight">Frame Height </label>
             <input
               className=""
               type="number"
               step="0.5"
-              id="wallHeight"
-              value={wallHeight}
+              id="frameHeight"
+              value={frameHeight}
               onChange={inputChangeHandler}
             />
           </div>
@@ -142,6 +133,17 @@ export const InputsForm = (props: Props) => {
               step="0.5"
               id="wallWidth"
               value={wallWidth}
+              onChange={inputChangeHandler}
+            />
+          </div>
+          <div className="flex flex-col">
+            <label htmlFor="wallHeight">Wall Height </label>
+            <input
+              className=""
+              type="number"
+              step="0.5"
+              id="wallHeight"
+              value={wallHeight}
               onChange={inputChangeHandler}
             />
           </div>
