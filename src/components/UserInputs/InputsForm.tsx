@@ -2,6 +2,20 @@ import { useReducer } from "react";
 import { Button } from "../UI/Button";
 import Card from "../UI/Card";
 
+interface Props {
+  calculate: (data: {
+    frameCount: number;
+    frameHeight: number;
+    frameWidth: number;
+    wallHeight: number;
+    wallWidth: number;
+    layout: "row" | "column" |"grid";
+    gap: number;
+    gridRows: number;
+    gridColumns: number;
+  }) => void;
+}
+
 const initialState = {
   frameCount: "",
   frameHeight: "",
@@ -17,7 +31,7 @@ const initialState = {
 const formReducer = (curVals: any, newVals: any) => {
   return { ...curVals, ...newVals };
 };
-export const InputsForm = () => {
+export const InputsForm = (props: Props) => {
   const [formState, dispatchForm] = useReducer(formReducer, initialState);
 
   const {
@@ -34,11 +48,16 @@ export const InputsForm = () => {
 
   const inputChangeHandler = (event: any) => {
     const { id, value } = event.target;
-    dispatchForm({ [id]: value });
+    if (isNaN(value)) {
+      dispatchForm({ [id]: value });
+    } else {
+      dispatchForm({ [id]: +value });
+    }
   };
   const onSubmitHandler = (event: any) => {
     event.preventDefault();
     console.log(formState);
+    props.calculate(formState);
   };
 
   const dimensionsInputs = (
@@ -136,7 +155,7 @@ export const InputsForm = () => {
               value={gap}
               onChange={inputChangeHandler}
             />
-          </div> 
+          </div>
           <div className="flex flex-col">
             <label htmlFor="layout">Layout </label>
             <select id="layout" value={layout} onChange={inputChangeHandler}>
@@ -145,9 +164,9 @@ export const InputsForm = () => {
               <option value="grid">Grid</option>
             </select>
           </div>
-          <div>{layout === "grid" && dimensionsInputs}</div>
+          {layout === "grid" && dimensionsInputs}
         </div>
-        <div className="text-right">
+        <div className="text-center">
           <Button />
         </div>
       </form>
