@@ -18,7 +18,7 @@ function App() {
     for (let i = 0; i < data.frameCount; i++) {
       itemsArr.push({ width: data.frameWidth, height: data.frameHeight });
     }
-    switch (data.layout) {
+    try{switch (data.layout) {
       case "row":
         setTopCorner(
           getDots(
@@ -46,7 +46,11 @@ function App() {
             { width: data.wallWidth, height: data.wallHeight }
           )
         );
+    }}
+    catch{ 
+      alert("Whoops something went wrong")
     }
+    
   };
 
   return (
@@ -64,10 +68,7 @@ function App() {
       </Card>
       <InputsForm calculate={getCalculation} />
       <Measurements topCorner={topCorner} />
-      <WholeDisplay
-        wallWidth={gridOptions?.wallWidth.toString}
-        wallHeight={gridOptions?.wallHeight.toString}
-      />
+      {gridOptions ? <WholeDisplay options={gridOptions} /> : "hm?"}
     </div>
   );
 }
