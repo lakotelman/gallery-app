@@ -2,7 +2,7 @@ import { useReducer } from "react";
 import { Button } from "../UI/Button";
 import Card from "../UI/Card";
 
-interface IGridOptions {
+export interface IGridOptions {
   frameCount: number;
   frameHeight: number;
   frameWidth: number;
@@ -19,15 +19,15 @@ interface Props {
 }
 
 const initialState = {
-  frameCount: "",
-  frameHeight: "",
-  frameWidth: "",
-  wallHeight: "",
-  wallWidth: "",
-  layout: "",
-  gap: "",
-  gridRows: "",
-  gridColumns: "",
+  frameCount: 4,
+  frameHeight: 7,
+  frameWidth: 5,
+  wallHeight: 32,
+  wallWidth: 25,
+  layout: "grid",
+  gap: 2,
+  gridRows: 2,
+  gridColumns: 2,
 };
 
 const formReducer = (curVals: any, newVals: any) => {

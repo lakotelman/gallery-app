@@ -2,44 +2,50 @@ import { useState } from "react";
 import "./index.css";
 import { InputsForm } from "./components/UserInputs/InputsForm";
 import Card from "./components/UI/Card";
+import { IGridOptions } from "./components/UserInputs/InputsForm";
 import Measurements from "./components/Outputs/Measurments";
 import { getDots } from "./utils/operations";
+import WholeDisplay from "./components/Outputs/WholeDisplay";
 
 function App() {
   const [topCorner, setTopCorner] = useState<number[]>([]);
+  const [gridOptions, setGridOptions] = useState<IGridOptions>();
 
-  const getCalculation = (data: any) => {
+  const getCalculation = (data: IGridOptions) => {
+    setGridOptions(data);
+
     let itemsArr = [];
     for (let i = 0; i < data.frameCount; i++) {
       itemsArr.push({ width: data.frameWidth, height: data.frameHeight });
     }
-    if (data.layout === "row") {
-      setTopCorner(
-        getDots(
-          itemsArr,
-          data.gap,
-          { rows: 1, columns: data.frameCount },
-          { width: data.wallWidth, height: data.wallHeight }
-        )
-      );
-    } else if (data.layout === "column") {
-      setTopCorner(
-        getDots(
-          itemsArr,
-          data.gap,
-          { rows: data.frameCount, columns: 1 },
-          { width: data.wallWidth, height: data.wallHeight }
-        )
-      );
-    } else {
-      setTopCorner(
-        getDots(
-          itemsArr,
-          data.gap,
-          { rows: data.gridRows, columns: data.gridColumns },
-          { width: data.wallWidth, height: data.wallHeight }
-        )
-      );
+    switch (data.layout) {
+      case "row":
+        setTopCorner(
+          getDots(
+            itemsArr,
+            data.gap,
+            { rows: 1, columns: data.frameCount },
+            { width: data.wallWidth, height: data.wallHeight }
+          )
+        );
+      case "column":
+        setTopCorner(
+          getDots(
+            itemsArr,
+            data.gap,
+            { rows: data.frameCount, columns: 1 },
+            { width: data.wallWidth, height: data.wallHeight }
+          )
+        );
+      case "grid":
+        setTopCorner(
+          getDots(
+            itemsArr,
+            data.gap,
+            { rows: data.gridRows, columns: data.gridColumns },
+            { width: data.wallWidth, height: data.wallHeight }
+          )
+        );
     }
   };
 
@@ -58,6 +64,10 @@ function App() {
       </Card>
       <InputsForm calculate={getCalculation} />
       <Measurements topCorner={topCorner} />
+      <WholeDisplay
+        wallWidth={gridOptions?.wallWidth.toString}
+        wallHeight={gridOptions?.wallHeight.toString}
+      />
     </div>
   );
 }
